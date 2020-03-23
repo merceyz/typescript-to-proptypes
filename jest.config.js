@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
 	testEnvironment: 'node',
 	transform: defaults.transform,
-	testRegex: `test/.*\.test\.ts`,
+	testRegex: `test/.*\.test\.ts$`,
 	globals: {
 		'ts-jest': {
 			packageJson: path.join(__dirname, 'package.json')
