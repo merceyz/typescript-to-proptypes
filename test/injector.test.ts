@@ -9,7 +9,6 @@ it('recognizes string literals in property signature name', () => {
 				types: [
 					{
 						type: 'PropTypeNode',
-						filenames: new Set<string>(),
 						jsDoc: 'The id(s) of the element(s) that describe the dialog.',
 						name: 'aria-describedby',
 						propType: {
