@@ -39,6 +39,10 @@ it('recognizes string literals in property signature name', () => {
 
 		Dialog.propTypes = {
 
+		/**
+		* The id(s) of the element(s) that describe the dialog.
+		*/
+		\\"aria-describedby\\": PropTypes.string.isRequired,
 		}
 
 		export default Dialog;"
