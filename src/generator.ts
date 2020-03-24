@@ -72,7 +72,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 
 		return filteredNodes
 			.map((prop) => generate(prop, options))
-			.reduce((prev, curr) => `${prev}\n${curr}`, '');
+			.reduce((prev, curr) => `${prev}\n${curr}`);
 	}
 
 	if (t.isProgramNode(node)) {
