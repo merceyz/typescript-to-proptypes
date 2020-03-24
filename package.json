@@ -17,8 +17,8 @@
 	"scripts": {
 		"test": "jest",
 		"build": "rm -rf dist && tsc",
-		"release": "run build && standard-version",
-		"prepack": "run build"
+		"release": "yarn run build && standard-version",
+		"prepack": "yarn run build"
 	},
 	"devDependencies": {
 		"@types/babel__core": "^7.1.2",
