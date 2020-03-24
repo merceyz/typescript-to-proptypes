@@ -1,0 +1,5 @@
+{
+	"buildCommand": "yarn build",
+	"installCommand": "yarn install",
+	"sandboxes": []
+}
