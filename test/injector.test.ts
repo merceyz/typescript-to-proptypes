@@ -37,7 +37,6 @@ it('recognizes string literals in property signature name', () => {
 		}
 
 		Dialog.propTypes = {
-
 		/**
 		* The id(s) of the element(s) that describe the dialog.
 		*/
