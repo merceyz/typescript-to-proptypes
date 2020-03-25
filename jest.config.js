@@ -7,7 +7,7 @@ module.exports = {
 	testRegex: `test/.*\.test\.ts$`,
 	globals: {
 		'ts-jest': {
-			packageJson: path.join(__dirname, 'package.json')
-		}
-	}
+			packageJson: path.join(__dirname, 'package.json'),
+		},
+	},
 };
