@@ -1,0 +1,13 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Select",
+			"types": [
+				{ "type": "PropTypeNode", "name": "value", "propType": { "type": "AnyNode" } },
+				{ "type": "PropTypeNode", "name": "variant", "propType": { "type": "AnyNode" } }
+			]
+		}
+	]
+}
