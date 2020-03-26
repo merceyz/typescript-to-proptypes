@@ -20,6 +20,7 @@ for (const testCase of testCases) {
 	const testName = dirname.substr(__dirname.length + 1);
 	const astPath = path.join(dirname, 'output.json');
 	const outputPath = path.join(dirname, 'output.js');
+	const injectOptionsPath = path.join(dirname, 'injectOptions.js');
 
 	it(testName, () => {
 		const ast = ttp.parseFromProgram(testCase, program);
@@ -52,7 +53,14 @@ for (const testCase of testCases) {
 				},
 			}).outputText;
 
-			const injected = ttp.inject(ast, transpiled);
+			let injectOptions = {};
+			try {
+				injectOptions = require(injectOptionsPath);
+			} catch (error) {
+				// doesn't exist so ignore
+			}
+
+			const injected = ttp.inject(ast, transpiled, injectOptions);
 			if (!injected) {
 				throw new Error('Injection failed');
 			}

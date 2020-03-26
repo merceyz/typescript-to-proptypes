@@ -1,0 +1,43 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Snackbar",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "key",
+					"jsDoc": "some hints about state reset that relates to prop of this component",
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "UndefinedNode" }, { "type": "AnyNode" }]
+					}
+				},
+				{
+					"jsDoc": "some prop that is inherited which we don't care about here",
+					"name": "onChange",
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "UndefinedNode" }, { "type": "FunctionNode" }]
+					},
+					"type": "PropTypeNode"
+				}
+			]
+		},
+		{
+			"type": "ComponentNode",
+			"name": "SomeOtherComponent",
+			"types": [
+				{
+					"name": "children",
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "ElementNode" }, { "type": "UndefinedNode" }]
+					},
+					"type": "PropTypeNode"
+				}
+			]
+		}
+	]
+}
