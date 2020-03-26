@@ -5,7 +5,7 @@ function Select(props) {
 }
 
 Select.propTypes = {
-	value: PropTypes.any.isRequired,
+	value: PropTypes.any,
 	variant: PropTypes.any.isRequired,
 };
 

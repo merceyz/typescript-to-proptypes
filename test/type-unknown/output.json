@@ -5,7 +5,14 @@
 			"type": "ComponentNode",
 			"name": "Select",
 			"types": [
-				{ "type": "PropTypeNode", "name": "value", "propType": { "type": "AnyNode" } },
+				{
+					"type": "PropTypeNode",
+					"name": "value",
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "UndefinedNode" }, { "type": "AnyNode" }]
+					}
+				},
 				{ "type": "PropTypeNode", "name": "variant", "propType": { "type": "AnyNode" } }
 			]
 		}
