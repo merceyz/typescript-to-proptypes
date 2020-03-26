@@ -24,7 +24,7 @@ export interface GenerateOptions {
 	 * Control which PropTypes are included in the final result
 	 * @param proptype The current PropType about to be converted to text
 	 */
-	shouldInclude?(proptype: t.PropTypeNode): boolean | undefined;
+	shouldInclude?(proptype: t.PropTypeNode, component: t.ComponentNode): boolean | undefined;
 
 	/**
 	 * A comment that will be added to the start of the PropTypes code block
@@ -34,6 +34,8 @@ export interface GenerateOptions {
 	 * }
 	 */
 	comment?: string;
+
+	component?: t.ComponentNode;
 }
 
 /**
@@ -47,6 +49,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 		importedName = 'PropTypes',
 		includeJSDoc = true,
 		shouldInclude,
+		component,
 	} = options;
 
 	function jsDoc(node: t.PropTypeNode | t.LiteralNode) {
@@ -67,7 +70,8 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 
 		let filteredNodes = node;
 		if (shouldInclude) {
-			filteredNodes = filteredNodes.filter((x) => shouldInclude(x));
+			// we're in a component context so it's definitely not-null
+			filteredNodes = filteredNodes.filter((x) => shouldInclude(x, component!));
 		}
 
 		return filteredNodes
@@ -86,10 +90,10 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 			options.comment &&
 			`// ${options.comment.split(/\r?\n/gm).reduce((prev, curr) => `${prev}\n// ${curr}`)}\n`;
 
-		return `${node.name}.propTypes = {\n${comment ? comment : ''}${generate(
-			node.types,
-			options
-		)}\n}`;
+		return `${node.name}.propTypes = {\n${comment ? comment : ''}${generate(node.types, {
+			...options,
+			component: node,
+		})}\n}`;
 	}
 
 	if (t.isPropTypeNode(node)) {

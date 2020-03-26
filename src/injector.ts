@@ -21,7 +21,11 @@ export type InjectOptions = {
 	 * use the default behaviour
 	 * @default includeUnusedProps ? true : data.usedProps.includes(`${data.prop.name}`)
 	 */
-	shouldInclude?(data: { prop: t.PropTypeNode; usedProps: string[] }): boolean | undefined;
+	shouldInclude?(data: {
+		component: t.ComponentNode;
+		prop: t.PropTypeNode;
+		usedProps: string[];
+	}): boolean | undefined;
 } & Pick<GenerateOptions, 'sortProptypes' | 'includeJSDoc' | 'comment'>;
 
 /**
@@ -156,14 +160,10 @@ function plugin(
 
 				let usedProps: string[] = [];
 
-				if (!includeUnusedProps) {
-					const prop = node.params[0];
-					if (babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop)) {
-						usedProps = getUsedProps(path, prop);
-					}
+				const prop = node.params[0];
+				if (babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop)) {
+					usedProps = getUsedProps(path, prop);
 				}
-
-				if (usedProps.length === 0 && !includeUnusedProps) return;
 
 				needImport = true;
 
@@ -271,7 +271,7 @@ function plugin(
 		const source = generate(props, {
 			...otherOptions,
 			importedName: importName,
-			shouldInclude: (prop) => shouldInclude!({ prop, usedProps }),
+			shouldInclude: (prop, component) => shouldInclude!({ component, prop, usedProps }),
 		});
 
 		const placeholder = `const a${uuid().replace(/\-/g, '_')} = null;`;
