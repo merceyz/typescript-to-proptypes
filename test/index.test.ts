@@ -20,6 +20,8 @@ for (const testCase of testCases) {
 	const testName = dirname.substr(__dirname.length + 1);
 	const astPath = path.join(dirname, 'output.json');
 	const outputPath = path.join(dirname, 'output.js');
+	const injectOptionsPath = path.join(dirname, 'injectOptions.js');
+	const inputJS = path.join(dirname, 'input.js');
 
 	it(testName, () => {
 		const ast = ttp.parseFromProgram(testCase, program);
@@ -38,21 +40,35 @@ for (const testCase of testCases) {
 		}
 		//#endregion
 
-		let result = '';
-		// For d.ts files we just generate the AST
+		let inputSource = null;
 		if (testCase.endsWith('.d.ts')) {
-			result = ttp.generate(ast);
-		}
-		// For .tsx? files we transpile them and inject the proptypes
-		else {
-			const transpiled = ttp.ts.transpileModule(fs.readFileSync(testCase, 'utf8'), {
+			try {
+				inputSource = fs.readFileSync(inputJS, { encoding: 'utf8' });
+			} catch (error) {}
+		} else {
+			inputSource = ttp.ts.transpileModule(fs.readFileSync(testCase, 'utf8'), {
 				compilerOptions: {
 					target: ttp.ts.ScriptTarget.ESNext,
 					jsx: ttp.ts.JsxEmit.Preserve,
 				},
 			}).outputText;
+		}
 
-			const injected = ttp.inject(ast, transpiled);
+		let result = '';
+		// For d.ts-only files we just generate the AST
+		if (!inputSource) {
+			result = ttp.generate(ast);
+		}
+		// For .tsx? files we transpile them and inject the proptypes
+		else {
+			let injectOptions = {};
+			try {
+				injectOptions = require(injectOptionsPath);
+			} catch (error) {
+				// doesn't exist so ignore
+			}
+
+			const injected = ttp.inject(ast, inputSource, injectOptions);
 			if (!injected) {
 				throw new Error('Injection failed');
 			}
