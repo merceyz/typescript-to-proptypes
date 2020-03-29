@@ -360,8 +360,8 @@ export function parseFromProgram(
 					return t.instanceOfNode(typeName);
 				}
 				case 'Element': {
-					// Nextjs: Element isn't defined on the server
-					return t.instanceOfNode("typeof Element === 'undefined' ? Object : Element");
+					// Nextjs: Element isn't defined on the server nor is stable between window frames.
+					return t.instanceOfNode('Object');
 				}
 			}
 		}
