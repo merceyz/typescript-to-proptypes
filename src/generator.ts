@@ -86,6 +86,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 
 		let filteredNodes = node;
 		if (shouldInclude) {
+			// we're in a component context so it's definitely not-null
 			filteredNodes = filteredNodes.filter((x) => shouldInclude(x));
 		}
 
@@ -105,7 +106,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 	}
 
 	if (t.isComponentNode(node)) {
-		const generated = generate(node.types, options);
+		const generated = generate(node.types, { ...options });
 		if (generated.length === 0) {
 			return '';
 		}
