@@ -5,20 +5,20 @@ import * as React from 'react';
 // some concrete documentation for `key` regarding this component
 export interface SnackBarProps {
 	/**
-	 * some hints about state reset that relates to prop of this component
+	 * Some hints about why this is useful
 	 */
-	key?: any;
+	id?: string;
 	/**
 	 * some prop that is inherited which we don't care about here
 	 */
-	onChange?: () => any;
+	onChange?: () => void;
 }
 
 export function Snackbar(props: SnackBarProps) {
 	return <div {...props} />;
 }
 
-// here we don't care about `key`
-export function SomeOtherComponent(props: { children?: React.ReactNode }) {
-	return <div>{props.children}</div>;
+// here we don't care about `id`
+export function SomeOtherComponent(props: { id?: string }) {
+	return <div {...props} />;
 }

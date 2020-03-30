@@ -3,22 +3,16 @@ import PropTypes from 'prop-types';
 function Snackbar(props) {
 	return <div {...props} />;
 }
-// here we don't care about `key`
+// here we don't care about `id`
 
 Snackbar.propTypes = {
 	/**
-	 * some hints about state reset that relates to prop of this component
+	 * Some hints about why this is useful
 	 */
-	key: PropTypes.any,
+	id: PropTypes.string,
 };
 
 export { Snackbar };
-function SomeOtherComponent(props) {
-	return <div>{props.children}</div>;
+export function SomeOtherComponent(props) {
+	return <div {...props} />;
 }
-
-SomeOtherComponent.propTypes = {
-	children: PropTypes.node,
-};
-
-export { SomeOtherComponent };

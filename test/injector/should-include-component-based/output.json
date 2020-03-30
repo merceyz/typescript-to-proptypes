@@ -7,21 +7,21 @@
 			"types": [
 				{
 					"type": "PropTypeNode",
-					"name": "key",
-					"jsDoc": "some hints about state reset that relates to prop of this component",
+					"name": "id",
+					"jsDoc": "Some hints about why this is useful",
 					"propType": {
 						"type": "UnionNode",
-						"types": [{ "type": "UndefinedNode" }, { "type": "AnyNode" }]
+						"types": [{ "type": "UndefinedNode" }, { "type": "StringNode" }]
 					}
 				},
 				{
-					"jsDoc": "some prop that is inherited which we don't care about here",
+					"type": "PropTypeNode",
 					"name": "onChange",
+					"jsDoc": "some prop that is inherited which we don't care about here",
 					"propType": {
 						"type": "UnionNode",
 						"types": [{ "type": "UndefinedNode" }, { "type": "FunctionNode" }]
-					},
-					"type": "PropTypeNode"
+					}
 				}
 			]
 		},
@@ -30,12 +30,12 @@
 			"name": "SomeOtherComponent",
 			"types": [
 				{
-					"name": "children",
+					"type": "PropTypeNode",
+					"name": "id",
 					"propType": {
 						"type": "UnionNode",
-						"types": [{ "type": "ElementNode" }, { "type": "UndefinedNode" }]
-					},
-					"type": "PropTypeNode"
+						"types": [{ "type": "UndefinedNode" }, { "type": "StringNode" }]
+					}
 				}
 			]
 		}
