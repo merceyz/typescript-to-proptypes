@@ -19,9 +19,14 @@ export type InjectOptions = {
 	 * Used to control which props are includes in the result
 	 * @return true to include the prop, false to skip it, or undefined to
 	 * use the default behaviour
-	 * @default includeUnusedProps ? true : data.usedProps.includes(`${data.prop.name}`)
+	 * @default includeUnusedProps ? true : data.usedProps.includes(data.prop.name)
 	 */
 	shouldInclude?(data: { prop: t.PropTypeNode; usedProps: string[] }): boolean | undefined;
+
+	/**
+	 * Options passed to babel.transformSync
+	 */
+	babelOptions?: babel.TransformOptions;
 } & Pick<GenerateOptions, 'sortProptypes' | 'includeJSDoc' | 'comment'>;
 
 /**
@@ -41,15 +46,19 @@ export function inject(
 
 	const propTypesToInject = new Map<string, string>();
 
+	const { plugins: babelPlugins = [], ...babelOptions } = options.babelOptions || {};
+
 	const result = babel.transformSync(target, {
 		plugins: [
 			require.resolve('@babel/plugin-syntax-class-properties'),
 			require.resolve('@babel/plugin-syntax-jsx'),
 			plugin(propTypes, options, propTypesToInject),
+			...(babelPlugins || []),
 		],
 		configFile: false,
 		babelrc: false,
 		retainLines: true,
+		...babelOptions,
 	});
 
 	let code = result && result.code;
@@ -81,7 +90,7 @@ function plugin(
 			}
 		}
 
-		return includeUnusedProps ? true : data.usedProps.includes(`${data.prop.name}`);
+		return includeUnusedProps ? true : data.usedProps.includes(data.prop.name);
 	};
 
 	let importName = '';
@@ -154,26 +163,17 @@ function plugin(
 				const props = propTypes.body.find((prop) => prop.name === node.id!.name);
 				if (!props) return;
 
-				let usedProps: string[] = [];
-
-				if (!includeUnusedProps) {
-					const prop = node.params[0];
-					if (babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop)) {
-						usedProps = getUsedProps(path, prop);
-					}
-				}
-
-				if (usedProps.length === 0 && !includeUnusedProps) return;
-
-				needImport = true;
-
 				// Prevent visiting again
 				(node as any).hasBeenVisited = true;
 				path.skip();
 
+				const prop = node.params[0];
 				injectPropTypes({
 					nodeName: node.id.name,
-					usedProps,
+					usedProps:
+						babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop)
+							? getUsedProps(path, prop)
+							: [],
 					path,
 					props,
 				});
@@ -208,21 +208,19 @@ function plugin(
 				}
 
 				function getFromProp(prop: babelTypes.Node) {
-					const usedProps =
-						!includeUnusedProps &&
-						(babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop))
-							? getUsedProps(path, prop)
-							: [];
-
-					if (usedProps.length === 0 && !includeUnusedProps) return;
-
-					needImport = true;
-
 					// Prevent visiting again
 					(node as any).hasBeenVisited = true;
 					path.skip();
 
-					injectPropTypes({ path: path.parentPath, usedProps, props: props!, nodeName });
+					injectPropTypes({
+						path: path.parentPath,
+						usedProps:
+							babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop)
+								? getUsedProps(path, prop)
+								: [],
+						props: props!,
+						nodeName,
+					});
 				}
 			},
 			ClassDeclaration(path) {
@@ -240,19 +238,13 @@ function plugin(
 				const props = propTypes.body.find((prop) => prop.name === nodeName);
 				if (!props) return;
 
-				const usedProps = !includeUnusedProps ? getUsedProps(path, undefined) : [];
-
-				if (usedProps.length === 0 && !includeUnusedProps) return;
-
-				needImport = true;
-
 				// Prevent visiting again
 				(node as any).hasBeenVisited = true;
 				path.skip();
 
 				injectPropTypes({
 					nodeName,
-					usedProps,
+					usedProps: getUsedProps(path, undefined),
 					path,
 					props,
 				});
@@ -273,6 +265,12 @@ function plugin(
 			importedName: importName,
 			shouldInclude: (prop) => shouldInclude!({ prop, usedProps }),
 		});
+
+		if (source.length === 0) {
+			return;
+		}
+
+		needImport = true;
 
 		const placeholder = `const a${uuid().replace(/\-/g, '_')} = null;`;
 
