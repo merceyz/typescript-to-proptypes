@@ -11,6 +11,16 @@ export type InjectOptions = {
 	 */
 	includeUnusedProps?: boolean;
 	/**
+	 * Given the `prop`, the `previous` source of the validator and the `generated` source:
+	 * What source should be injected?
+	 * @default Uses `generated` source
+	 */
+	reconcilePropTypes?: (
+		prop: t.PropTypeNode,
+		previous: string | undefined,
+		generated: string
+	) => string;
+	/**
 	 * By default existing PropTypes are left alone, set this to true
 	 * to have them removed before injecting the PropTypes
 	 */
@@ -80,8 +90,16 @@ function plugin(
 	options: InjectOptions = {},
 	mapOfPropTypes: Map<string, string>
 ): babel.PluginObj {
-	const { includeUnusedProps = false, removeExistingPropTypes = false, ...otherOptions } = options;
-
+	const {
+		includeUnusedProps = false,
+		reconcilePropTypes = (
+			_prop: t.PropTypeNode,
+			_previous: string | undefined,
+			generated: string
+		) => generated,
+		removeExistingPropTypes = false,
+		...otherOptions
+	} = options;
 	const shouldInclude: InjectOptions['shouldInclude'] = (data) => {
 		if (options.shouldInclude) {
 			const result = options.shouldInclude(data);
@@ -96,11 +114,12 @@ function plugin(
 	let importName = '';
 	let needImport = false;
 	let alreadyImported = false;
+	let previousPropTypesSource = new Map<string, string>();
 
 	return {
 		visitor: {
 			Program: {
-				enter(path) {
+				enter(path, state: any) {
 					if (
 						!path.node.body.some((n) => {
 							if (
@@ -117,19 +136,30 @@ function plugin(
 						importName = 'PropTypes';
 					}
 
-					if (removeExistingPropTypes) {
-						path.get('body').forEach((nodePath) => {
-							const { node } = nodePath;
-							if (
-								babelTypes.isExpressionStatement(node) &&
-								babelTypes.isAssignmentExpression(node.expression, { operator: '=' }) &&
-								babelTypes.isMemberExpression(node.expression.left) &&
-								babelTypes.isIdentifier(node.expression.left.property, { name: 'propTypes' })
-							) {
+					path.get('body').forEach((nodePath) => {
+						const { node } = nodePath;
+						if (
+							babelTypes.isExpressionStatement(node) &&
+							babelTypes.isAssignmentExpression(node.expression, { operator: '=' }) &&
+							babelTypes.isMemberExpression(node.expression.left) &&
+							babelTypes.isIdentifier(node.expression.left.property, { name: 'propTypes' })
+						) {
+							if (babelTypes.isObjectExpression(node.expression.right)) {
+								const { code } = state.file;
+
+								node.expression.right.properties.forEach((property) => {
+									if (babelTypes.isObjectProperty(property)) {
+										const validatorSource = code.slice(property.value.start, property.value.end);
+										previousPropTypesSource.set(property.key.name, validatorSource);
+									}
+								});
+							}
+
+							if (removeExistingPropTypes) {
 								nodePath.remove();
 							}
-						});
-					}
+						}
+					});
 				},
 				exit(path) {
 					if (alreadyImported || !needImport) return;
@@ -263,6 +293,8 @@ function plugin(
 		const source = generate(props, {
 			...otherOptions,
 			importedName: importName,
+			previousPropTypesSource,
+			reconcilePropTypes,
 			shouldInclude: (prop) => shouldInclude!({ prop, usedProps }),
 		});
 
