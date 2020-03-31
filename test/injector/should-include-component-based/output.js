@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 function Snackbar(props) {
 	return <div {...props} />;
 }
-// here we don't care about `id`
 
 Snackbar.propTypes = {
 	/**
