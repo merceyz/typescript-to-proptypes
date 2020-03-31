@@ -262,7 +262,6 @@ export function parseFromProgram(
 		const properties = type
 			.getProperties()
 			.filter((symbol) => shouldInclude({ name: symbol.getName(), depth: 1 }));
-
 		if (properties.length === 0) {
 			return;
 		}
