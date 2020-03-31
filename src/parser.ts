@@ -259,14 +259,15 @@ export function parseFromProgram(
 	}
 
 	function parsePropsType(name: string, type: ts.Type, sourceFile?: ts.SourceFile) {
-		const propsFilename = sourceFile !== undefined ? sourceFile.fileName : undefined;
+		const properties = type
+			.getProperties()
+			.filter((symbol) => shouldInclude({ name: symbol.getName(), depth: 1 }));
 
-		const properties = type.getProperties().filter((symbol) => {
-			return shouldInclude({ name: symbol.getName(), depth: 1 });
-		});
 		if (properties.length === 0) {
 			return;
 		}
+
+		const propsFilename = sourceFile !== undefined ? sourceFile.fileName : undefined;
 
 		programNode.body.push(
 			t.componentNode(
