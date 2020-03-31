@@ -11,7 +11,7 @@ export interface ComponentNode extends DefinitionHolder {
 export function componentNode(
 	name: string,
 	types: PropTypeNode[],
-	propsFilename?: string
+	propsFilename: string | undefined
 ): ComponentNode {
 	return {
 		type: typeString,

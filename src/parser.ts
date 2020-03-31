@@ -194,7 +194,8 @@ export function parseFromProgram(
 							if (symbol) {
 								parsePropsType(
 									variableNode.name.getText(),
-									checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
+									checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration),
+									node.getSourceFile()
 								);
 							}
 						}
@@ -214,7 +215,11 @@ export function parseFromProgram(
 			if (!arg.typeArguments) return;
 
 			if (reactImports.includes(arg.expression.getText())) {
-				parsePropsType(node.name.getText(), checker.getTypeAtLocation(arg.typeArguments[0]));
+				parsePropsType(
+					node.name.getText(),
+					checker.getTypeAtLocation(arg.typeArguments[0]),
+					node.getSourceFile()
+				);
 			}
 		}
 	}
@@ -255,10 +260,10 @@ export function parseFromProgram(
 			signature.parameters[0].valueDeclaration
 		);
 
-		parsePropsType(node.name.getText(), type);
+		parsePropsType(node.name.getText(), type, node.getSourceFile());
 	}
 
-	function parsePropsType(name: string, type: ts.Type, sourceFile?: ts.SourceFile) {
+	function parsePropsType(name: string, type: ts.Type, sourceFile: ts.SourceFile | undefined) {
 		const properties = type
 			.getProperties()
 			.filter((symbol) => shouldInclude({ name: symbol.getName(), depth: 1 }));
