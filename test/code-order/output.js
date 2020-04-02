@@ -6,10 +6,10 @@ function Component(props) {
 	return <div>{value}</div>;
 }
 
+const someValidator = () => new Error();
+
 Component.propTypes = {
 	value: PropTypes.any.isRequired,
 };
-
-const someValidator = () => new Error();
 
 export default Component;
