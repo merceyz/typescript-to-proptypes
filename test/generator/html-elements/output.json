@@ -8,23 +8,20 @@
 				{
 					"type": "PropTypeNode",
 					"name": "element",
-					"propType": { "type": "DOMElementNode", "elementType": "Element", "optional": false }
+					"propType": { "type": "DOMElementNode", "optional": false }
 				},
 				{
 					"type": "PropTypeNode",
 					"name": "optional",
 					"propType": {
 						"type": "UnionNode",
-						"types": [
-							{ "type": "UndefinedNode" },
-							{ "type": "DOMElementNode", "elementType": "Element", "optional": false }
-						]
+						"types": [{ "type": "UndefinedNode" }, { "type": "DOMElementNode", "optional": false }]
 					}
 				},
 				{
 					"type": "PropTypeNode",
 					"name": "htmlElement",
-					"propType": { "type": "DOMElementNode", "elementType": "HTMLElement", "optional": false }
+					"propType": { "type": "DOMElementNode", "optional": false }
 				},
 				{
 					"type": "PropTypeNode",
@@ -32,8 +29,8 @@
 					"propType": {
 						"type": "UnionNode",
 						"types": [
-							{ "type": "DOMElementNode", "elementType": "Element", "optional": false },
-							{ "type": "DOMElementNode", "elementType": "HTMLElement", "optional": false }
+							{ "type": "DOMElementNode", "optional": false },
+							{ "type": "DOMElementNode", "optional": false }
 						]
 					}
 				}

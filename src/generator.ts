@@ -168,9 +168,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 
 	if (t.isDOMElementNode(node)) {
 		return `function (props, propName) {
-			var node = props[propName];
-
-			if (node == null) {
+			if (props[propName] == null) {
 				return ${
 					node.optional
 						? 'null'
@@ -178,21 +176,9 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 				}
 			}
 
-			var ownerWindow = null;
-			if (node.toString() !== '[object Window]') {
-				var ownerDocument = node.ownerDocument;
-				ownerWindow = ownerDocument ? ownerDocument.defaultView : window;
-			} else {
-				ownerWindow = node;
-			}
-
-			if (node instanceof ownerWindow.${node.elementType} || node instanceof ${node.elementType}) {
-				return null
-			}
-
-			return new Error("The element provided to '" + propName + "' is not an instance of '${
-				node.elementType
-			}'");
+			if (typeof props[propName] !== 'object' || props[propName].nodeType !== 1) {
+				return new Error("Expected prop '" + propName + "' to be of type Element")
+			}			
 		}`;
 	}
 
@@ -207,13 +193,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 	if (t.isUnionNode(node)) {
 		let [literals, rest] = _.partition(node.types, t.isLiteralNode);
 		literals = _.uniqBy(literals, (x) => x.value);
-		rest = _.uniqBy(rest, (x) =>
-			t.isInstanceOfNode(x)
-				? `${x.type}.${x.instance}`
-				: t.isDOMElementNode(x)
-				? `${x.type}.${x.elementType}`
-				: x.type
-		);
+		rest = _.uniqBy(rest, (x) => (t.isInstanceOfNode(x) ? `${x.type}.${x.instance}` : x.type));
 
 		literals = literals.sort((a, b) => a.value.localeCompare(b.value));
 
@@ -224,8 +204,6 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 				// An interface is PropTypes.shape
 				// Use `ShapeNode` to get it sorted in the correct order
 				return `ShapeNode`;
-			} else if (t.isDOMElementNode(obj)) {
-				return `${obj.type}.${obj.elementType}`;
 			}
 
 			return obj.type;

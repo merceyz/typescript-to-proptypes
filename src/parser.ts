@@ -359,11 +359,9 @@ export function parseFromProgram(
 				case 'React.Component': {
 					return t.instanceOfNode(typeName);
 				}
-				case 'Element': {
-					return t.DOMElementNode('Element');
-				}
+				case 'Element':
 				case 'HTMLElement': {
-					return t.DOMElementNode('HTMLElement');
+					return t.DOMElementNode();
 				}
 			}
 		}
