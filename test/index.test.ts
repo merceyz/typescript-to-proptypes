@@ -37,7 +37,7 @@ for (const testCase of testCases) {
 				astPath,
 				prettier.format(JSON.stringify(ast), {
 					...prettierConfig,
-					filepath: astPath
+					filepath: astPath,
 				})
 			);
 		}
@@ -52,8 +52,8 @@ for (const testCase of testCases) {
 			inputSource = ttp.ts.transpileModule(fs.readFileSync(testCase, 'utf8'), {
 				compilerOptions: {
 					target: ttp.ts.ScriptTarget.ESNext,
-					jsx: ttp.ts.JsxEmit.Preserve
-				}
+					jsx: ttp.ts.JsxEmit.Preserve,
+				},
 			}).outputText;
 		}
 
@@ -75,7 +75,7 @@ for (const testCase of testCases) {
 		//#region Check generated and/or injected proptypes
 		const propTypes = prettier.format(result, {
 			...prettierConfig,
-			filepath: outputPath
+			filepath: outputPath,
 		});
 
 		if (fs.existsSync(outputPath)) {

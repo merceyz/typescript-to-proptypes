@@ -2,8 +2,8 @@ import { TestOptions } from '../types';
 
 const options: TestOptions = {
 	injector: {
-		removeExistingPropTypes: true
-	}
+		removeExistingPropTypes: true,
+	},
 };
 
 export default options;

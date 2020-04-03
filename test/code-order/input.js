@@ -9,7 +9,7 @@ function Component(props) {
 const someValidator = () => new Error();
 
 Component.propTypes = {
-	value: PropTypes.any
+	value: PropTypes.any,
 };
 
 export default Component;
