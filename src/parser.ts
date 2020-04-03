@@ -374,7 +374,9 @@ export function parseFromProgram(
 		}
 
 		if (type.isUnion()) {
-			return t.unionNode(type.types.map((x) => checkType(x, typeStack, name)));
+			const node = t.unionNode(type.types.map((x) => checkType(x, typeStack, name)));
+
+			return node.types.length === 1 ? node.types[0] : node;
 		}
 
 		if (type.flags & ts.TypeFlags.String) {

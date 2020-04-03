@@ -3,10 +3,10 @@ import { Node } from '../nodes/baseNodes';
 const typeString = 'DOMElementNode';
 
 interface DOMElementNode extends Node {
-	optional: boolean;
+	optional?: boolean;
 }
 
-export function DOMElementNode(optional: boolean = false): DOMElementNode {
+export function DOMElementNode(optional?: boolean): DOMElementNode {
 	return {
 		type: typeString,
 		optional,

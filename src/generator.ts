@@ -1,5 +1,6 @@
 import * as t from './types';
 import _ from 'lodash';
+import { uniqUnion } from './types';
 
 export interface GenerateOptions {
 	/**
@@ -191,9 +192,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 	}
 
 	if (t.isUnionNode(node)) {
-		let [literals, rest] = _.partition(node.types, t.isLiteralNode);
-		literals = _.uniqBy(literals, (x) => x.value);
-		rest = _.uniqBy(rest, (x) => (t.isInstanceOfNode(x) ? `${x.type}.${x.instance}` : x.type));
+		let [literals, rest] = _.partition(uniqUnion(node).types, t.isLiteralNode);
 
 		literals = literals.sort((a, b) => a.value.localeCompare(b.value));
 
