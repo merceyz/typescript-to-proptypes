@@ -23,7 +23,7 @@ export function unionNode(types: Node[]): UnionNode {
 		});
 	}
 
-	return uniqUnion({
+	return uniqueUnionTypes({
 		type: typeString,
 		types: flatTypes,
 	});
@@ -33,7 +33,7 @@ export function isUnionNode(node: Node): node is UnionNode {
 	return node.type === typeString;
 }
 
-export function uniqUnion(node: UnionNode): UnionNode {
+export function uniqueUnionTypes(node: UnionNode): UnionNode {
 	return {
 		type: node.type,
 		types: _.uniqBy(node.types, (x) => {
