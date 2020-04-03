@@ -174,9 +174,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 						? 'null'
 						: `new Error("Prop '" + propName + "' is required but wasn't specified")`
 				}
-			}
-
-			if (typeof props[propName] !== 'object' || props[propName].nodeType !== 1) {
+			} else if (typeof props[propName] !== 'object' || props[propName].nodeType !== 1) {
 				return new Error("Expected prop '" + propName + "' to be of type Element")
 			}			
 		}`;
