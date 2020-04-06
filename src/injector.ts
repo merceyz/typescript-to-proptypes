@@ -11,16 +11,6 @@ export type InjectOptions = {
 	 */
 	includeUnusedProps?: boolean;
 	/**
-	 * Given the `prop`, the `previous` source of the validator and the `generated` source:
-	 * What source should be injected?
-	 * @default Uses `generated` source
-	 */
-	reconcilePropTypes?: (
-		prop: t.PropTypeNode,
-		previous: string | undefined,
-		generated: string
-	) => string;
-	/**
 	 * By default existing PropTypes are left alone, set this to true
 	 * to have them removed before injecting the PropTypes
 	 */
@@ -41,7 +31,7 @@ export type InjectOptions = {
 	 * Options passed to babel.transformSync
 	 */
 	babelOptions?: babel.TransformOptions;
-} & Pick<GenerateOptions, 'sortProptypes' | 'includeJSDoc' | 'comment'>;
+} & Pick<GenerateOptions, 'sortProptypes' | 'includeJSDoc' | 'comment' | 'reconcilePropTypes'>;
 
 /**
  * Injects the PropTypes from `parse` into the provided JavaScript code
