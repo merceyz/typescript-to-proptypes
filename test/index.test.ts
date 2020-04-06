@@ -30,12 +30,21 @@ for (const testCase of testCases) {
 		const ast = ttp.parseFromProgram(testCase, program, options.parser);
 
 		//#region Check AST matches
+		// propsFilename will be different depending on where the project is on disk
+		// Manually check that it's correct and then delete it
+		const newAST = ttp.programNode(
+			ast.body.map((component) => {
+				expect(component.propsFilename).toBe(testCase);
+				return { ...component, propsFilename: undefined };
+			})
+		);
+
 		if (fs.existsSync(astPath)) {
-			expect(ast).toMatchObject(JSON.parse(fs.readFileSync(astPath, 'utf8')));
+			expect(newAST).toMatchObject(JSON.parse(fs.readFileSync(astPath, 'utf8')));
 		} else {
 			fs.writeFileSync(
 				astPath,
-				prettier.format(JSON.stringify(ast), {
+				prettier.format(JSON.stringify(newAST), {
 					...prettierConfig,
 					filepath: astPath,
 				})
@@ -58,9 +67,9 @@ for (const testCase of testCases) {
 		}
 
 		let result = '';
-		// For d.ts-only files we just generate the AST
+		// For d.ts files we just generate the AST
 		if (!inputSource) {
-			result = ttp.generate(ast);
+			result = ttp.generate(ast, options.generator);
 		}
 		// For .tsx? files we transpile them and inject the proptypes
 		else {
