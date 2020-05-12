@@ -3,9 +3,9 @@ interface ButtonProps {
 	variant?: string;
 }
 
-interface Component {
+interface Component<C extends React.ElementType = 'div'> {
 	(props: ButtonProps): JSX.Element;
-	(props: { component: string } & ButtonProps): JSX.Element;
+	(props: { component: C } & ButtonProps): JSX.Element;
 }
 
 // a component using overloading and intersection of function signature

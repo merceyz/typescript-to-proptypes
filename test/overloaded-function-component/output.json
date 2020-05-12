@@ -12,19 +12,22 @@
 						"type": "UnionNode",
 						"types": [{ "type": "UndefinedNode" }, { "type": "StringNode" }]
 					},
-					"filenames": {}
+					"filenames": {},
+					"id": 23
 				},
 				{
 					"type": "PropTypeNode",
 					"name": "component",
-					"propType": { "type": "StringNode" },
-					"filenames": {}
+					"propType": { "type": "LiteralNode", "value": "\"div\"" },
+					"filenames": {},
+					"id": 26
 				},
 				{
 					"type": "PropTypeNode",
 					"name": "href",
 					"propType": { "type": "StringNode" },
-					"filenames": {}
+					"filenames": {},
+					"id": 29
 				}
 			]
 		}

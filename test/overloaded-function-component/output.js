@@ -1,5 +1,5 @@
 ButtonBase.propTypes = {
-	component: PropTypes.string.isRequired,
+	component: PropTypes.oneOf(['div']).isRequired,
 	href: PropTypes.string.isRequired,
 	variant: PropTypes.string,
 };
