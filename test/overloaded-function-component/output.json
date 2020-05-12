@@ -13,21 +13,21 @@
 						"types": [{ "type": "UndefinedNode" }, { "type": "StringNode" }]
 					},
 					"filenames": {},
-					"id": 23
+					"id": 1286
 				},
 				{
 					"type": "PropTypeNode",
 					"name": "component",
 					"propType": { "type": "LiteralNode", "value": "\"div\"" },
 					"filenames": {},
-					"id": 26
+					"id": 1289
 				},
 				{
 					"type": "PropTypeNode",
 					"name": "href",
 					"propType": { "type": "StringNode" },
 					"filenames": {},
-					"id": 29
+					"id": 1292
 				}
 			]
 		}

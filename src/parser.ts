@@ -30,10 +30,6 @@ export interface ParserOptions {
 	 * @example declare const Component: React.ComponentType<Props>;
 	 */
 	checkDeclarations?: boolean;
-	resolvePropsTypes?: (
-		checker: ts.TypeChecker,
-		sourceFile: ts.SourceFile
-	) => Array<{ name: string; type: ts.Type }>;
 }
 
 /**
@@ -105,12 +101,6 @@ export function parseFromProgram(
 	if (sourceFile) {
 		ts.forEachChild(sourceFile, visitImports);
 		ts.forEachChild(sourceFile, visit);
-
-		if (parserOptions.resolvePropsTypes) {
-			parserOptions.resolvePropsTypes(checker, sourceFile).forEach((propsType) => {
-				parsePropsType(propsType.name, propsType.type, sourceFile);
-			});
-		}
 	} else {
 		throw new Error(`Program doesn't contain file "${filePath}"`);
 	}
