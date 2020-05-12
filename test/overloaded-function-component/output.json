@@ -1,0 +1,32 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "ButtonBase",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "variant",
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "UndefinedNode" }, { "type": "StringNode" }]
+					},
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "component",
+					"propType": { "type": "StringNode" },
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "href",
+					"propType": { "type": "StringNode" },
+					"filenames": {}
+				}
+			]
+		}
+	]
+}

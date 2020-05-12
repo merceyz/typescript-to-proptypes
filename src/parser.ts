@@ -30,6 +30,10 @@ export interface ParserOptions {
 	 * @example declare const Component: React.ComponentType<Props>;
 	 */
 	checkDeclarations?: boolean;
+	resolvePropsTypes?: (
+		checker: ts.TypeChecker,
+		sourceFile: ts.SourceFile
+	) => Array<{ name: string; type: ts.Type }>;
 }
 
 /**
@@ -101,6 +105,12 @@ export function parseFromProgram(
 	if (sourceFile) {
 		ts.forEachChild(sourceFile, visitImports);
 		ts.forEachChild(sourceFile, visit);
+
+		if (parserOptions.resolvePropsTypes) {
+			parserOptions.resolvePropsTypes(checker, sourceFile).forEach((propsType) => {
+				parsePropsType(propsType.name, propsType.type, sourceFile);
+			});
+		}
 	} else {
 		throw new Error(`Program doesn't contain file "${filePath}"`);
 	}
@@ -170,6 +180,8 @@ export function parseFromProgram(
 								type.aliasTypeArguments[0],
 								node.getSourceFile()
 							);
+						} else if (checkDeclarations) {
+							parseFunctionComponent(variableNode);
 						}
 					} else if (
 						(ts.isArrowFunction(variableNode.initializer) ||
@@ -246,21 +258,56 @@ export function parseFromProgram(
 		if (!symbol) {
 			return;
 		}
+		const componentName =  node.name.getText();
 
-		const signature = checker
-			.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration)
-			.getCallSignatures()[0];
+		const type = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration);
+		type.getCallSignatures().forEach((signature) => {
+			if (!isTypeJSXElementLike(signature.getReturnType())) {
+				return;
+			}
 
-		if (!isTypeJSXElementLike(signature.getReturnType())) {
-			return;
-		}
+			const propsType = checker.getTypeOfSymbolAtLocation(
+				signature.parameters[0],
+				signature.parameters[0].valueDeclaration
+			);
 
-		const type = checker.getTypeOfSymbolAtLocation(
-			signature.parameters[0],
-			signature.parameters[0].valueDeclaration
+			parsePropsType(componentName, propsType, node.getSourceFile());
+		});
+
+		// squash props
+		// { variant: 'a' } & { variant: 'b' }
+		// to
+		// { variant: 'a' | 'b' }
+		const props: Record<string, t.PropTypeNode> = {};
+		programNode.body = programNode.body.filter((node) => {
+			if (node.name === componentName) {
+				// squash props
+				node.types.forEach((typeNode) => {
+					let { [typeNode.name]: currentTypeNode } = props;
+					if (currentTypeNode === undefined) {
+						currentTypeNode = typeNode;
+					} else if (currentTypeNode.id !== typeNode.id) {
+						currentTypeNode = t.propTypeNode(
+							currentTypeNode.name,
+							currentTypeNode.jsDoc,
+							t.unionNode([currentTypeNode.propType, typeNode.propType]),
+							new Set(Array.from(currentTypeNode.filenames).concat(Array.from(typeNode.filenames))),
+							undefined
+						);
+					}
+
+					props[typeNode.name] = currentTypeNode;
+				});
+
+				// delete each signature, we'll add it later unionized
+				return false;
+			}
+			return true;
+		});
+
+		programNode.body.push(
+			t.componentNode(componentName, Object.values(props), node.getSourceFile().fileName)
 		);
-
-		parsePropsType(node.name.getText(), type, node.getSourceFile());
 	}
 
 	function parsePropsType(name: string, type: ts.Type, sourceFile: ts.SourceFile | undefined) {
@@ -313,7 +360,8 @@ export function parseFromProgram(
 					symbol.getName(),
 					getDocumentation(symbol),
 					declaration.questionToken ? t.unionNode([t.undefinedNode(), elementNode]) : elementNode,
-					symbolFilenames
+					symbolFilenames,
+					(symbol as any).id
 				);
 			}
 		}
@@ -345,7 +393,13 @@ export function parseFromProgram(
 			parsedType = checkType(type, typeStack, symbol.getName());
 		}
 
-		return t.propTypeNode(symbol.getName(), getDocumentation(symbol), parsedType, symbolFilenames);
+		return t.propTypeNode(
+			symbol.getName(),
+			getDocumentation(symbol),
+			parsedType,
+			symbolFilenames,
+			(symbol as any).id
+		);
 	}
 
 	function checkType(type: ts.Type, typeStack: number[], name: string): t.Node {
