@@ -18,14 +18,20 @@
 				{
 					"type": "PropTypeNode",
 					"name": "component",
-					"propType": { "type": "LiteralNode", "value": "\"div\"" },
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "LiteralNode", "value": "\"div\"" }, { "type": "UndefinedNode" }]
+					},
 					"filenames": {},
 					"id": 1289
 				},
 				{
 					"type": "PropTypeNode",
 					"name": "href",
-					"propType": { "type": "StringNode" },
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "StringNode" }, { "type": "UndefinedNode" }]
+					},
 					"filenames": {},
 					"id": 1292
 				}

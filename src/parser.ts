@@ -248,7 +248,7 @@ export function parseFromProgram(
 		if (!symbol) {
 			return;
 		}
-		const componentName =  node.name.getText();
+		const componentName = node.name.getText();
 
 		const type = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration);
 		type.getCallSignatures().forEach((signature) => {
@@ -265,14 +265,18 @@ export function parseFromProgram(
 		});
 
 		// squash props
-		// { variant: 'a' } & { variant: 'b' }
+		// { variant: 'a', href: string } & { variant: 'b' }
 		// to
-		// { variant: 'a' | 'b' }
+		// { variant: 'a' | 'b', href?: string }
 		const props: Record<string, t.PropTypeNode> = {};
+		const usedPropsPerSignature: Set<String>[] = [];
 		programNode.body = programNode.body.filter((node) => {
 			if (node.name === componentName) {
+				const usedProps: Set<string> = new Set();
 				// squash props
 				node.types.forEach((typeNode) => {
+					usedProps.add(typeNode.name);
+
 					let { [typeNode.name]: currentTypeNode } = props;
 					if (currentTypeNode === undefined) {
 						currentTypeNode = typeNode;
@@ -289,6 +293,8 @@ export function parseFromProgram(
 					props[typeNode.name] = currentTypeNode;
 				});
 
+				usedPropsPerSignature.push(usedProps);
+
 				// delete each signature, we'll add it later unionized
 				return false;
 			}
@@ -296,7 +302,21 @@ export function parseFromProgram(
 		});
 
 		programNode.body.push(
-			t.componentNode(componentName, Object.values(props), node.getSourceFile().fileName)
+			t.componentNode(
+				componentName,
+				Object.entries(props).map(([name, propType]) => {
+					const onlyUsedInSomeSignatures = usedPropsPerSignature.some((props) => !props.has(name));
+					if (onlyUsedInSomeSignatures) {
+						// mark as optional
+						return {
+							...propType,
+							propType: t.unionNode([propType.propType, t.undefinedNode()]),
+						};
+					}
+					return propType;
+				}),
+				node.getSourceFile().fileName
+			)
 		);
 	}
 
