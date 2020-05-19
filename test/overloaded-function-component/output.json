@@ -13,7 +13,7 @@
 						"types": [{ "type": "UndefinedNode" }, { "type": "StringNode" }]
 					},
 					"filenames": {},
-					"id": 1286
+					"id": 1295
 				},
 				{
 					"type": "PropTypeNode",
@@ -23,7 +23,7 @@
 						"types": [{ "type": "LiteralNode", "value": "\"div\"" }, { "type": "UndefinedNode" }]
 					},
 					"filenames": {},
-					"id": 1289
+					"id": 1298
 				},
 				{
 					"type": "PropTypeNode",
@@ -33,7 +33,7 @@
 						"types": [{ "type": "StringNode" }, { "type": "UndefinedNode" }]
 					},
 					"filenames": {},
-					"id": 1292
+					"id": 1301
 				}
 			]
 		}
