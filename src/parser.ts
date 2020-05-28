@@ -280,7 +280,7 @@ export function parseFromProgram(
 					let { [typeNode.name]: currentTypeNode } = props;
 					if (currentTypeNode === undefined) {
 						currentTypeNode = typeNode;
-					} else if (currentTypeNode.id !== typeNode.id) {
+					} else if (currentTypeNode.$$id !== typeNode.$$id) {
 						currentTypeNode = t.propTypeNode(
 							currentTypeNode.name,
 							currentTypeNode.jsDoc,

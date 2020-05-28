@@ -3,11 +3,14 @@ import { Node } from './baseNodes';
 const typeString = 'PropTypeNode';
 
 export interface PropTypeNode extends Node {
-	id: number | undefined;
 	name: string;
 	jsDoc?: string;
 	propType: Node;
 	filenames: Set<string>;
+	/**
+	 * @internal
+	 */
+	$$id: number | undefined;
 }
 
 export function propTypeNode(
@@ -23,7 +26,7 @@ export function propTypeNode(
 		jsDoc,
 		propType,
 		filenames,
-		id,
+		$$id: id,
 	};
 }
 

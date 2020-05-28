@@ -12,8 +12,7 @@
 						"type": "UnionNode",
 						"types": [{ "type": "UndefinedNode" }, { "type": "StringNode" }]
 					},
-					"filenames": {},
-					"id": 1295
+					"filenames": {}
 				},
 				{
 					"type": "PropTypeNode",
@@ -22,8 +21,7 @@
 						"type": "UnionNode",
 						"types": [{ "type": "LiteralNode", "value": "\"div\"" }, { "type": "UndefinedNode" }]
 					},
-					"filenames": {},
-					"id": 1298
+					"filenames": {}
 				},
 				{
 					"type": "PropTypeNode",
@@ -32,8 +30,7 @@
 						"type": "UnionNode",
 						"types": [{ "type": "StringNode" }, { "type": "UndefinedNode" }]
 					},
-					"filenames": {},
-					"id": 1301
+					"filenames": {}
 				}
 			]
 		}
