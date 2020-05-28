@@ -139,7 +139,7 @@ function plugin(
 							babelTypes.isMemberExpression(node.expression.left) &&
 							babelTypes.isIdentifier(node.expression.left.property, { name: 'propTypes' })
 						) {
-							originalPropTypesPath = nodePath as any;
+							originalPropTypesPath = nodePath;
 
 							if (babelTypes.isObjectExpression(node.expression.right)) {
 								const { code } = state.file;
@@ -195,9 +195,9 @@ function plugin(
 					nodeName: node.id.name,
 					usedProps:
 						babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop)
-							? getUsedProps(path as any, prop)
+							? getUsedProps(path, prop)
 							: [],
-					path: path as any,
+					path,
 					props,
 				});
 			},
@@ -239,7 +239,7 @@ function plugin(
 						path: path.parentPath,
 						usedProps:
 							babelTypes.isIdentifier(prop) || babelTypes.isObjectPattern(prop)
-								? getUsedProps(path as any, prop)
+								? getUsedProps(path, prop)
 								: [],
 						props: props!,
 						nodeName,
@@ -267,8 +267,8 @@ function plugin(
 
 				injectPropTypes({
 					nodeName,
-					usedProps: getUsedProps(path as any, undefined),
-					path: path  as any,
+					usedProps: getUsedProps(path, undefined),
+					path,
 					props,
 				});
 			},
@@ -302,7 +302,7 @@ function plugin(
 		mapOfPropTypes.set(placeholder, source);
 
 		if (removeExistingPropTypes && originalPropTypesPath !== null) {
-			originalPropTypesPath.replaceWith(babel.template.ast(placeholder) as any);
+			originalPropTypesPath.replaceWith(babel.template.ast(placeholder) as babelTypes.Statement);
 		} else if (babelTypes.isExportNamedDeclaration(path.parent)) {
 			path.insertAfter(babel.template.ast(`export { ${nodeName} };`));
 			path.insertAfter(babel.template.ast(placeholder));
