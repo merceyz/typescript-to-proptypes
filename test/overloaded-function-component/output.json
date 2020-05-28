@@ -19,7 +19,10 @@
 					"name": "component",
 					"propType": {
 						"type": "UnionNode",
-						"types": [{ "type": "LiteralNode", "value": "\"div\"" }, { "type": "UndefinedNode" }]
+						"types": [
+							{ "type": "ElementNode", "elementType": "elementType" },
+							{ "type": "UndefinedNode" }
+						]
 					},
 					"filenames": {}
 				},
