@@ -13,7 +13,7 @@ function TextField(props) {
 
 TextField.propTypes = {
 	value: PropTypes.any,
-	variant: PropTypes.oneOf(['standard']),
+	variant: PropTypes.oneOf(['filled', 'outlined', 'standard']),
 };
 
 export default TextField;

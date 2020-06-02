@@ -12,7 +12,9 @@
 						"type": "UnionNode",
 						"types": [
 							{ "type": "UndefinedNode" },
-							{ "type": "LiteralNode", "value": "\"standard\"" }
+							{ "type": "LiteralNode", "value": "\"standard\"" },
+							{ "type": "LiteralNode", "value": "\"outlined\"" },
+							{ "type": "LiteralNode", "value": "\"filled\"" }
 						]
 					},
 					"filenames": {}
