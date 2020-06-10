@@ -38,7 +38,8 @@ export type InjectOptions = {
 	 * By always returning 0 from the sort function you keep the order the type checker dictates.
 	 */
 	getSortLiteralUnions?: (
-		node: t.PropTypeNode
+		component: t.ComponentNode,
+		propType: t.PropTypeNode
 	) => ((a: t.LiteralNode, b: t.LiteralNode) => number) | undefined;
 
 	/**

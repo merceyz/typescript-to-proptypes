@@ -57,7 +57,8 @@ export interface GenerateOptions {
 	 * If `undefined` is returned the default `sortLiteralUnions` will be used.
 	 */
 	getSortLiteralUnions?: (
-		node: t.PropTypeNode
+		component: t.ComponentNode,
+		propType: t.PropTypeNode
 	) => ((a: t.LiteralNode, b: t.LiteralNode) => number) | undefined;
 
 	/**
@@ -66,6 +67,12 @@ export interface GenerateOptions {
 	 * - anything else by their stringified value using localeCompare
 	 */
 	sortLiteralUnions?: (a: t.LiteralNode, b: t.LiteralNode) => number;
+
+	/**
+	 * The component of the given `node`.
+	 * Must be defined for anything but programs and components
+	 */
+	component?: t.ComponentNode;
 }
 
 function defaultSortLiteralUnions(a: t.LiteralNode, b: t.LiteralNode) {
@@ -93,6 +100,7 @@ function defaultSortLiteralUnions(a: t.LiteralNode, b: t.LiteralNode) {
  */
 export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptions = {}): string {
 	const {
+		component,
 		sortProptypes = true,
 		importedName = 'PropTypes',
 		includeJSDoc = true,
@@ -140,7 +148,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 	}
 
 	if (t.isComponentNode(node)) {
-		const generated = generate(node.types, options);
+		const generated = generate(node.types, { ...options, component: node });
 		if (generated.length === 0) {
 			return '';
 		}
@@ -150,6 +158,10 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 			`// ${options.comment.split(/\r?\n/gm).reduce((prev, curr) => `${prev}\n// ${curr}`)}\n`;
 
 		return `${node.name}.propTypes = {\n${comment ? comment : ''}${generated}\n}`;
+	}
+
+	if (component === undefined) {
+		throw new TypeError('Missing component context. This is likely a bug. Please open an issue.');
 	}
 
 	if (t.isPropTypeNode(node)) {
@@ -177,7 +189,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 			previousPropTypesSource.get(node.name),
 			`${generate(propType, {
 				...options,
-				sortLiteralUnions: getSortLiteralUnions(node) || sortLiteralUnions,
+				sortLiteralUnions: getSortLiteralUnions(component, node) || sortLiteralUnions,
 			})}${isOptional ? '' : '.isRequired'}`
 		);
 
