@@ -28,13 +28,18 @@ export type InjectOptions = {
 	}): boolean | undefined;
 
 	/**
+	 * You can override the order of literals in unions based on the proptype.
+	 *
 	 * By default literals in unions are sorted by:
 	 * - numbers last, ascending
 	 * - anything else by their stringified value using localeCompare
-	 * By passing a function that always returns `0`
-	 * literals are generated in the order they appear in the typings.
+	 * Note: The order of the literals as they "appear" in the typings cannot be preserved.
+	 * Sometimes the type checker preserves it, sometimes it doesn't.
+	 * By always returning 0 from the sort function you keep the order the type checker dictates.
 	 */
-	sortLiteralUnions?: (a: t.LiteralNode, b: t.LiteralNode) => number;
+	getSortLiteralUnions?: (
+		node: t.PropTypeNode
+	) => ((a: t.LiteralNode, b: t.LiteralNode) => number) | undefined;
 
 	/**
 	 * Options passed to babel.transformSync

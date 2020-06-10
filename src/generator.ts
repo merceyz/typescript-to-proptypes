@@ -53,13 +53,37 @@ export interface GenerateOptions {
 	comment?: string;
 
 	/**
+	 * Overrides the given `sortLiteralUnions` based on the proptype.
+	 * If `undefined` is returned the default `sortLiteralUnions` will be used.
+	 */
+	getSortLiteralUnions?: (
+		node: t.PropTypeNode
+	) => ((a: t.LiteralNode, b: t.LiteralNode) => number) | undefined;
+
+	/**
 	 * By default literals in unions are sorted by:
 	 * - numbers last, ascending
 	 * - anything else by their stringified value using localeCompare
-	 * By passing a function that always returns `0`
-	 * literals are generated in the order they appear in the typings.
 	 */
 	sortLiteralUnions?: (a: t.LiteralNode, b: t.LiteralNode) => number;
+}
+
+function defaultSortLiteralUnions(a: t.LiteralNode, b: t.LiteralNode) {
+	const { value: valueA } = a;
+	const { value: valueB } = b;
+	// numbers ascending
+	if (typeof valueA === 'number' && typeof valueB === 'number') {
+		return valueA - valueB;
+	}
+	// numbers last
+	if (typeof valueA === 'number') {
+		return 1;
+	}
+	if (typeof valueB === 'number') {
+		return -1;
+	}
+	// sort anything else by their stringified value
+	return String(valueA).localeCompare(String(valueB));
 }
 
 /**
@@ -75,23 +99,8 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 		previousPropTypesSource = new Map<string, string>(),
 		reconcilePropTypes = (_prop: t.PropTypeNode, _previous: string, generated: string) => generated,
 		shouldInclude,
-		sortLiteralUnions = (a: t.LiteralNode, b: t.LiteralNode) => {
-			const { value: valueA } = a;
-			const { value: valueB } = b;
-			// numbers ascending
-			if (typeof valueA === 'number' && typeof valueB === 'number') {
-				return valueA - valueB;
-			}
-			// numbers last
-			if (typeof valueA === 'number') {
-				return 1;
-			}
-			if (typeof valueB === 'number') {
-				return -1;
-			}
-			// sort anything else by their stringified value
-			return String(valueA).localeCompare(String(valueB));
-		},
+		getSortLiteralUnions = () => defaultSortLiteralUnions,
+		sortLiteralUnions = defaultSortLiteralUnions,
 	} = options;
 
 	function jsDoc(node: t.PropTypeNode | t.LiteralNode) {
@@ -166,7 +175,10 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 		const validatorSource = reconcilePropTypes(
 			node,
 			previousPropTypesSource.get(node.name),
-			`${generate(propType, options)}${isOptional ? '' : '.isRequired'}`
+			`${generate(propType, {
+				...options,
+				sortLiteralUnions: getSortLiteralUnions(node) || sortLiteralUnions,
+			})}${isOptional ? '' : '.isRequired'}`
 		);
 
 		return `${jsDoc(node)}"${node.name}": ${validatorSource},`;

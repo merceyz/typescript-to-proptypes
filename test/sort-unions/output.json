@@ -7,7 +7,24 @@
 			"types": [
 				{
 					"type": "PropTypeNode",
+					"name": "color",
+					"jsDoc": "will be sorted alphanumeric",
+					"propType": {
+						"type": "UnionNode",
+						"types": [
+							{ "type": "UndefinedNode" },
+							{ "type": "LiteralNode", "value": "\"inherit\"" },
+							{ "type": "LiteralNode", "value": "\"default\"" },
+							{ "type": "LiteralNode", "value": "\"primary\"" },
+							{ "type": "LiteralNode", "value": "\"secondary\"" }
+						]
+					},
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
 					"name": "only",
+					"jsDoc": "will be sorted by viewport size descending",
 					"propType": {
 						"type": "UnionNode",
 						"types": [
