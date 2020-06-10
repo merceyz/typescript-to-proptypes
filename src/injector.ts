@@ -28,6 +28,15 @@ export type InjectOptions = {
 	}): boolean | undefined;
 
 	/**
+	 * By default literals in unions are sorted by:
+	 * - numbers last, ascending
+	 * - anything else by their stringified value using localeCompare
+	 * By passing a function that always returns `0`
+	 * literals are generated in the order they appear in the typings.
+	 */
+	sortLiteralUnions?: (a: t.LiteralNode, b: t.LiteralNode) => number;
+
+	/**
 	 * Options passed to babel.transformSync
 	 */
 	babelOptions?: babel.TransformOptions;

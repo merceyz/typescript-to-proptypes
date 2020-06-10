@@ -51,6 +51,15 @@ export interface GenerateOptions {
 	 * }
 	 */
 	comment?: string;
+
+	/**
+	 * By default literals in unions are sorted by:
+	 * - numbers last, ascending
+	 * - anything else by their stringified value using localeCompare
+	 * By passing a function that always returns `0`
+	 * literals are generated in the order they appear in the typings.
+	 */
+	sortLiteralUnions?: (a: t.LiteralNode, b: t.LiteralNode) => number;
 }
 
 /**
@@ -66,6 +75,23 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 		previousPropTypesSource = new Map<string, string>(),
 		reconcilePropTypes = (_prop: t.PropTypeNode, _previous: string, generated: string) => generated,
 		shouldInclude,
+		sortLiteralUnions = (a: t.LiteralNode, b: t.LiteralNode) => {
+			const { value: valueA } = a;
+			const { value: valueB } = b;
+			// numbers ascending
+			if (typeof valueA === 'number' && typeof valueB === 'number') {
+				return valueA - valueB;
+			}
+			// numbers last
+			if (typeof valueA === 'number') {
+				return 1;
+			}
+			if (typeof valueB === 'number') {
+				return -1;
+			}
+			// sort anything else by their stringified value
+			return String(valueA).localeCompare(String(valueB));
+		},
 	} = options;
 
 	function jsDoc(node: t.PropTypeNode | t.LiteralNode) {
@@ -214,23 +240,7 @@ export function generate(node: t.Node | t.PropTypeNode[], options: GenerateOptio
 	if (t.isUnionNode(node)) {
 		let [literals, rest] = _.partition(t.uniqueUnionTypes(node).types, t.isLiteralNode);
 
-		literals = literals.sort((a, b) => {
-			const { value: valueA } = a;
-			const { value: valueB } = b;
-			// numbers ascending
-			if (typeof valueA === 'number' && typeof valueB === 'number') {
-				return valueA - valueB;
-			}
-			// numbers last
-			if (typeof valueA === 'number') {
-				return 1;
-			}
-			if (typeof valueB === 'number') {
-				return -1;
-			}
-			// sort anything else by their stringified value
-			return String(valueA).localeCompare(String(valueB));
-		});
+		literals = literals.sort(sortLiteralUnions);
 
 		const nodeToStringName = (obj: t.Node): string => {
 			if (t.isInstanceOfNode(obj)) {

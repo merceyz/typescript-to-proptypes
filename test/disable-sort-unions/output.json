@@ -1,0 +1,36 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Hidden",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "only",
+					"propType": {
+						"type": "UnionNode",
+						"types": [
+							{ "type": "UndefinedNode" },
+							{ "type": "LiteralNode", "value": "\"xs\"" },
+							{ "type": "LiteralNode", "value": "\"md\"" },
+							{ "type": "LiteralNode", "value": "\"xl\"" },
+							{
+								"type": "ArrayNode",
+								"arrayType": {
+									"type": "UnionNode",
+									"types": [
+										{ "type": "LiteralNode", "value": "\"xs\"" },
+										{ "type": "LiteralNode", "value": "\"md\"" },
+										{ "type": "LiteralNode", "value": "\"xl\"" }
+									]
+								}
+							}
+						]
+					},
+					"filenames": {}
+				}
+			]
+		}
+	]
+}
