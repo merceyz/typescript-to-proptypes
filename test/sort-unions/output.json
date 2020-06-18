@@ -1,0 +1,53 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Hidden",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "color",
+					"jsDoc": "will be sorted alphanumeric",
+					"propType": {
+						"type": "UnionNode",
+						"types": [
+							{ "type": "UndefinedNode" },
+							{ "type": "LiteralNode", "value": "\"inherit\"" },
+							{ "type": "LiteralNode", "value": "\"default\"" },
+							{ "type": "LiteralNode", "value": "\"primary\"" },
+							{ "type": "LiteralNode", "value": "\"secondary\"" }
+						]
+					},
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "only",
+					"jsDoc": "will be sorted by viewport size descending",
+					"propType": {
+						"type": "UnionNode",
+						"types": [
+							{ "type": "UndefinedNode" },
+							{ "type": "LiteralNode", "value": "\"xs\"" },
+							{ "type": "LiteralNode", "value": "\"md\"" },
+							{ "type": "LiteralNode", "value": "\"xl\"" },
+							{
+								"type": "ArrayNode",
+								"arrayType": {
+									"type": "UnionNode",
+									"types": [
+										{ "type": "LiteralNode", "value": "\"xs\"" },
+										{ "type": "LiteralNode", "value": "\"md\"" },
+										{ "type": "LiteralNode", "value": "\"xl\"" }
+									]
+								}
+							}
+						]
+					},
+					"filenames": {}
+				}
+			]
+		}
+	]
+}
