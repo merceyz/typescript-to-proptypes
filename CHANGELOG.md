@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/merceyz/typescript-to-proptypes/compare/v2.1.0...v2.1.1) (2020-08-17)
+
+### Bug Fixes
+
+- **injector:** check previous validator source for string literal keys ([5d06cfb](https://github.com/merceyz/typescript-to-proptypes/commit/5d06cfb0373d43b7a9c19fa2bb456b5efbb38e50))
+
 ## [2.1.0](https://github.com/merceyz/typescript-to-proptypes/compare/v2.0.1...v2.1.0) (2020-06-18)
 
 ### Features
