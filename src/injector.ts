@@ -162,7 +162,15 @@ function plugin(
 								node.expression.right.properties.forEach((property) => {
 									if (babelTypes.isObjectProperty(property)) {
 										const validatorSource = code.slice(property.value.start, property.value.end);
-										previousPropTypesSource.set(property.key.name, validatorSource);
+										if (babelTypes.isIdentifier(property.key)) {
+											previousPropTypesSource.set(property.key.name, validatorSource);
+										} else if (babelTypes.isStringLiteral(property.key)) {
+											previousPropTypesSource.set(property.key.value, validatorSource);
+										} else {
+											console.warn(
+												`${state.filename}: Possibly missed original proTypes source. Can only determine names for 'Identifiers' and 'StringLiteral' but received '${property.key.type}'.`
+											);
+										}
 									}
 								});
 							}
@@ -317,7 +325,7 @@ function plugin(
 		mapOfPropTypes.set(placeholder, source);
 
 		if (removeExistingPropTypes && originalPropTypesPath !== null) {
-			originalPropTypesPath.replaceWith(babel.template.ast(placeholder) as babelTypes.Statement);
+			originalPropTypesPath.replaceWith(babel.template.ast(placeholder) as any);
 		} else if (babelTypes.isExportNamedDeclaration(path.parent)) {
 			path.insertAfter(babel.template.ast(`export { ${nodeName} };`));
 			path.insertAfter(babel.template.ast(placeholder));
@@ -353,8 +361,12 @@ function getUsedProps(
 				if (babelTypes.isObjectProperty(x)) {
 					if (babelTypes.isStringLiteral(x.key)) {
 						usedProps.push(x.key.value);
-					} else {
+					} else if (babelTypes.isIdentifier(x.key)) {
 						usedProps.push(x.key.name);
+					} else {
+						console.warn(
+							'Possibly used prop missed because object property key was not an Identifier or StringLiteral.'
+						);
 					}
 				} else if (babelTypes.isIdentifier(x.argument)) {
 					getUsedPropsInternal(x.argument);
