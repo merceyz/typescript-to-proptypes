@@ -6912,7 +6912,7 @@ resolve@^1.17.0:
     standard-version: ^8.0.0
     ts-jest: ^26.1.0
     tslib: ^1.13.0
-    typescript: 3.5.2
+    typescript: 3.8.3
     uuid: ^8.1.0
   dependenciesMeta:
     core-js:
@@ -6920,23 +6920,23 @@ resolve@^1.17.0:
   languageName: unknown
   linkType: soft
 
-typescript@3.5.2:
-  version: 3.5.2
-  resolution: "typescript@npm:3.5.2"
+typescript@3.8.3:
+  version: 3.8.3
+  resolution: "typescript@npm:3.8.3"
   bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: 82661325d8df474a8c1d49bdb12e7456350913c300e485b7ee6f363dedd8b7421e8bd9e4180401128300a50441ec5487a2ba9c1e13641ebb371fbca9ae284659
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 519b11576247fe3570d89a2aa757d8f666aafc0cb9465a6cdd4df09c1dc6bf7285f0c6008d2ac7a55ea26457e767aaab819f58439d80af2cce1d9805b2be1034
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@3.5.2#builtin<compat/typescript>":
-  version: 3.5.2
-  resolution: "typescript@patch:typescript@npm%3A3.5.2#builtin<compat/typescript>::version=3.5.2&hash=5b02a2"
+"typescript@patch:typescript@3.8.3#builtin<compat/typescript>":
+  version: 3.8.3
+  resolution: "typescript@patch:typescript@npm%3A3.8.3#builtin<compat/typescript>::version=3.8.3&hash=5b02a2"
   bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: aeeadb783ae34cb65cab2627b682593c52df7e384cc15179605c359bd153749497635273887fac9c78b162a75bba6b94f20988025f455f37a0fcfc95a1269b92
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: dcadfa6d7c90af4ac23181cccda22bdc7270f23a2c8773ab0b6047e2b9b86bcd885da5c5acc020addc1a0df042940ab8e9bbfb33aedcf884bea554fe60fccd32
   languageName: node
   linkType: hard
 
