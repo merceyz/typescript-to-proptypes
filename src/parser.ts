@@ -333,13 +333,13 @@ export function parseFromProgram(
 		programNode.body.push(
 			t.componentNode(
 				name,
-				properties.map((x) => checkSymbol(x, [(type as any).id])),
+				properties.map((x) => checkSymbol(x, new Set([(type as any).id]))),
 				propsFilename
 			)
 		);
 	}
 
-	function checkSymbol(symbol: ts.Symbol, typeStack: number[]): t.PropTypeNode {
+	function checkSymbol(symbol: ts.Symbol, typeStack: Set<number>): t.PropTypeNode {
 		const declarations = symbol.getDeclarations();
 		const declaration = declarations && declarations[0];
 
@@ -421,10 +421,10 @@ export function parseFromProgram(
 		);
 	}
 
-	function checkType(type: ts.Type, typeStack: number[], name: string): t.Node {
+	function checkType(type: ts.Type, typeStack: Set<number>, name: string): t.Node {
 		// If the typeStack contains type.id we're dealing with an object that references itself.
 		// To prevent getting stuck in an infinite loop we just set it to an objectNode
-		if (typeStack.includes((type as any).id)) {
+		if (typeStack.has((type as any).id)) {
 			return t.objectNode();
 		}
 
@@ -507,14 +507,16 @@ export function parseFromProgram(
 			const properties = type.getProperties();
 			if (properties.length) {
 				if (
-					shouldResolveObject({ name, propertyCount: properties.length, depth: typeStack.length })
+					shouldResolveObject({ name, propertyCount: properties.length, depth: typeStack.size })
 				) {
 					const filtered = properties.filter((symbol) =>
-						shouldInclude({ name: symbol.getName(), depth: typeStack.length + 1 })
+						shouldInclude({ name: symbol.getName(), depth: typeStack.size + 1 })
 					);
 					if (filtered.length > 0) {
 						return t.interfaceNode(
-							filtered.map((x) => checkSymbol(x, [...typeStack, (type as any).id]))
+							filtered.map((x) =>
+								checkSymbol(x, new Set([...typeStack.values(), (type as any).id]))
+							)
 						);
 					}
 				}
