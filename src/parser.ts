@@ -444,6 +444,7 @@ export function parseFromProgram(
 				case 'React.ReactNode': {
 					return t.unionNode([t.elementNode('node'), t.undefinedNode()]);
 				}
+				case 'Date':
 				case 'React.Component': {
 					return t.instanceOfNode(typeName);
 				}

@@ -1,0 +1,26 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Foo",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "createdAt",
+					"propType": { "type": "InstanceOfNode", "instance": "Date" },
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "removedAt",
+					"propType": {
+						"type": "UnionNode",
+						"types": [{ "type": "UndefinedNode" }, { "type": "InstanceOfNode", "instance": "Date" }]
+					},
+					"filenames": {}
+				}
+			]
+		}
+	]
+}
