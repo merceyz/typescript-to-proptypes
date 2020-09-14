@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/merceyz/typescript-to-proptypes/compare/v2.1.2...v2.2.0) (2020-09-14)
+
+### Features
+
+- add TS@3.8 support ([#29](https://github.com/merceyz/typescript-to-proptypes/issues/29)) ([40f0358](https://github.com/merceyz/typescript-to-proptypes/commit/40f0358bc691e3c5b892276626d9dc554b4c2b6e))
+
+### Performance Improvements
+
+- **parser:** use set instead of array for stack ([426dd39](https://github.com/merceyz/typescript-to-proptypes/commit/426dd39bd17c5fb1990c0e023d108bc9df1d8b10))
+
 ### [2.1.2](https://github.com/merceyz/typescript-to-proptypes/compare/v2.1.1...v2.1.2) (2020-09-13)
 
 ### Bug Fixes
