@@ -6,6 +6,4 @@ interface Props {
 	isActive?: boolean;
 }
 
-declare const Input: ({ variant, isActive }: Props) => JSX.Element;
-
-export default Input;
+export default function Input(props: Props): JSX.Element;
