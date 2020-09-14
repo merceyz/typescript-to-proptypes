@@ -3,7 +3,7 @@
 	"body": [
 		{
 			"type": "ComponentNode",
-			"name": "TextField",
+			"name": "Input",
 			"types": [
 				{
 					"type": "PropTypeNode",
@@ -11,7 +11,6 @@
 					"propType": {
 						"type": "UnionNode",
 						"types": [
-							{ "type": "UndefinedNode" },
 							{ "type": "LiteralNode", "value": "\"standard\"" },
 							{ "type": "LiteralNode", "value": "\"filled\"" },
 							{ "type": "LiteralNode", "value": "\"outlined\"" }
@@ -21,10 +20,14 @@
 				},
 				{
 					"type": "PropTypeNode",
-					"name": "value",
+					"name": "isActive",
 					"propType": {
 						"type": "UnionNode",
-						"types": [{ "type": "UndefinedNode" }, { "type": "AnyNode" }]
+						"types": [
+							{ "type": "UndefinedNode" },
+							{ "type": "LiteralNode", "value": "false" },
+							{ "type": "LiteralNode", "value": "true" }
+						]
 					},
 					"filenames": {}
 				}

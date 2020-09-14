@@ -53,7 +53,7 @@
 		"doctrine": "^3.0.0",
 		"lodash": "^4.17.14",
 		"tslib": "^1.13.0",
-		"typescript": "3.5.2",
+		"typescript": "3.8.3",
 		"uuid": "^8.1.0"
 	},
 	"dependenciesMeta": {
