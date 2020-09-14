@@ -9,11 +9,10 @@ import { TestOptions } from './types';
 const prettierConfig = prettier.resolveConfig.sync(path.join(__dirname, '../.prettierrc'));
 
 const testCases = glob.sync('**/input.{d.ts,ts,tsx}', { absolute: true, cwd: __dirname });
-const otherFiles = glob.sync('**/external.{d.ts,ts,tsx}', { absolute: true, cwd: __dirname });
 
 // Create program for all files to speed up tests
 const program = ttp.createProgram(
-	[...testCases, ...otherFiles],
+	testCases,
 	ttp.loadConfig(path.resolve(__dirname, '../tsconfig.json'))
 );
 
