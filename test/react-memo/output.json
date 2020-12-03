@@ -1,0 +1,17 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Foo",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "Component",
+					"propType": { "type": "FunctionNode" },
+					"filenames": {}
+				}
+			]
+		}
+	]
+}
