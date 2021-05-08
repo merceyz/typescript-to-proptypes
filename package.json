@@ -43,7 +43,8 @@
 		"pretty-quick": "^2.0.1",
 		"react": "^16.8.6",
 		"standard-version": "^8.0.0",
-		"ts-jest": "^26.1.0"
+		"ts-jest": "^26.1.0",
+		"typescript": "3.8.3"
 	},
 	"dependencies": {
 		"@babel/core": "^7.11.1",
@@ -52,14 +53,16 @@
 		"@babel/types": "^7.11.0",
 		"doctrine": "^3.0.0",
 		"lodash": "^4.17.14",
-		"tslib": "^1.13.0",
-		"typescript": "3.8.3",
+		"tslib": "^2.2.0",
 		"uuid": "^8.1.0"
 	},
 	"dependenciesMeta": {
 		"core-js": {
 			"built": false
 		}
+	},
+	"peerDependencies": {
+		"typescript": "~3.8.0"
 	},
 	"husky": {
 		"hooks": {
