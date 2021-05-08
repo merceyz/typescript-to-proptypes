@@ -192,13 +192,9 @@ export function parseFromProgram(
 							(ts.isArrowFunction(arg) || ts.isFunctionExpression(arg)) &&
 							arg.parameters.length > 0
 						) {
-							const symbol = checker.getSymbolAtLocation(arg.parameters[0].name);
-							if (symbol) {
-								parsePropsType(
-									variableNode.name.getText(),
-									checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration),
-									node.getSourceFile()
-								);
+							const propsType = checker.getTypeAtLocation(arg.parameters[0]);
+							if (propsType) {
+								parsePropsType(variableNode.name.getText(), propsType, node.getSourceFile());
 							}
 						}
 					}

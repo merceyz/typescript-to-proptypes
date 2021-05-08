@@ -6801,10 +6801,10 @@ resolve@^1.17.0:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "tslib@npm:1.13.0"
-  checksum: 5dc3bdaea3b67c76ef4a14c28fcb2171da7bcf292fd9c59a260098729626b1ce766c52b588f08e324ed9a0c52ea8a93a815920f980d75981abc9d850fbf310fb
+"tslib@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "tslib@npm:2.2.0"
+  checksum: 2d35468c470410871c5246e43f12dcb6d0fc363b617c176f26443b9530e5c5ee8448966892a42956168d8f495da7865bda33dfe82c26c91991e28999974a618f
   languageName: node
   linkType: hard
 
@@ -6911,9 +6911,11 @@ resolve@^1.17.0:
     react: ^16.8.6
     standard-version: ^8.0.0
     ts-jest: ^26.1.0
-    tslib: ^1.13.0
+    tslib: ^2.2.0
     typescript: 3.8.3
     uuid: ^8.1.0
+  peerDependencies:
+    typescript: ~3.8.0
   dependenciesMeta:
     core-js:
       built: false
