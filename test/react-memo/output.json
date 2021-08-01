@@ -1,0 +1,47 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Foo",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "MemoComponent",
+					"propType": { "type": "ElementNode", "elementType": "elementType" },
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "OptionalMemoComponent",
+					"propType": {
+						"type": "UnionNode",
+						"types": [
+							{ "type": "UndefinedNode" },
+							{ "type": "ElementNode", "elementType": "elementType" }
+						]
+					},
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "Component",
+					"propType": { "type": "ElementNode", "elementType": "elementType" },
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "OptionalComponent",
+					"propType": {
+						"type": "UnionNode",
+						"types": [
+							{ "type": "UndefinedNode" },
+							{ "type": "ElementNode", "elementType": "elementType" }
+						]
+					},
+					"filenames": {}
+				}
+			]
+		}
+	]
+}
