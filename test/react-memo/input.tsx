@@ -1,10 +1,13 @@
 import * as React from 'react';
 
 type Props = {
-	Component: React.MemoExoticComponent<any>;
+	MemoComponent: React.MemoExoticComponent<any>;
+	OptionalMemoComponent?: React.MemoExoticComponent<any>;
+	Component: React.Component<any>;
+	OptionalComponent?: React.Component<any>;
 };
 
 export default function Foo(props: Props) {
-	const { Component } = props;
-	return <Component />;
+	const { MemoComponent, Component, OptionalComponent, OptionalMemoComponent } = props;
+	return <MemoComponent />;
 }

@@ -356,7 +356,9 @@ export function parseFromProgram(
 			if (
 				name === 'React.ElementType' ||
 				name === 'React.ComponentType' ||
-				name === 'React.ReactElement'
+				name === 'React.ReactElement' ||
+				name === 'React.MemoExoticComponent' ||
+				name === 'React.Component'
 			) {
 				const elementNode = t.elementNode(
 					name === 'React.ReactElement' ? 'element' : 'elementType'
