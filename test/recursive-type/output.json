@@ -1,0 +1,29 @@
+{
+	"type": "ProgramNode",
+	"body": [
+		{
+			"type": "ComponentNode",
+			"name": "Tree",
+			"types": [
+				{
+					"type": "PropTypeNode",
+					"name": "id",
+					"propType": { "type": "NumericNode" },
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "label",
+					"propType": { "type": "StringNode" },
+					"filenames": {}
+				},
+				{
+					"type": "PropTypeNode",
+					"name": "children",
+					"propType": { "type": "ArrayNode", "arrayType": { "type": "ObjectNode" } },
+					"filenames": {}
+				}
+			]
+		}
+	]
+}
