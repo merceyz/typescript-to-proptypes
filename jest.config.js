@@ -10,4 +10,5 @@ module.exports = {
 			packageJson: path.join(__dirname, 'package.json'),
 		},
 	},
+	coveragePathIgnorePatterns: ['/node_modules/', '/.pnp.cjs'],
 };
