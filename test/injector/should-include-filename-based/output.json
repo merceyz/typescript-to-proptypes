@@ -1079,7 +1079,7 @@
 					"name": "children",
 					"propType": {
 						"type": "UnionNode",
-						"types": [{ "type": "ElementNode", "elementType": "node" }, { "type": "UndefinedNode" }]
+						"types": [{ "type": "UndefinedNode" }, { "type": "ElementNode", "elementType": "node" }]
 					},
 					"filenames": {}
 				},
@@ -2556,7 +2556,7 @@
 					"name": "children",
 					"propType": {
 						"type": "UnionNode",
-						"types": [{ "type": "ElementNode", "elementType": "node" }, { "type": "UndefinedNode" }]
+						"types": [{ "type": "UndefinedNode" }, { "type": "ElementNode", "elementType": "node" }]
 					},
 					"filenames": {}
 				}

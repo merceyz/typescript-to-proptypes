@@ -394,20 +394,15 @@ export function parseFromProgram(
 			throw new Error('No types found');
 		}
 
-		// Typechecker only gives the type "any" if it's present in a union
-		// This means the type of "a" in {a?:any} isn't "any | undefined"
-		// So instead we check for the questionmark to detect optional types
-		let parsedType: t.Node | undefined = undefined;
-		if (
-			(type.flags & ts.TypeFlags.Any || type.flags & ts.TypeFlags.Unknown) &&
-			declaration &&
-			ts.isPropertySignature(declaration)
-		) {
-			parsedType = declaration.questionToken
-				? t.unionNode([t.undefinedNode(), t.anyNode()])
-				: t.anyNode();
-		} else {
-			parsedType = checkType(type, typeStack, symbol.getName());
+		let parsedType = checkType(type, typeStack, symbol.getName());
+
+		// In strict mode, the type of "a" in {a?: type} is "type | undefined",
+		// unless the type is "any", in which case TypeChecker only gives "any"
+		// Outside of strict mode, the type of "a" in {a?: type} is simply "type".
+		// To cover both of these cases we instead check for the questionmark
+		// to detect optional types
+		if (declaration && ts.isPropertySignature(declaration) && declaration.questionToken) {
+			parsedType = t.unionNode([t.undefinedNode(), parsedType]);
 		}
 
 		return t.propTypeNode(
@@ -440,7 +435,7 @@ export function parseFromProgram(
 					return t.elementNode('elementType');
 				}
 				case 'React.ReactNode': {
-					return t.unionNode([t.elementNode('node'), t.undefinedNode()]);
+					return t.unionNode([t.undefinedNode(), t.elementNode('node')]);
 				}
 				case 'Date':
 				case 'React.Component': {
