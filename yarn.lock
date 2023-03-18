@@ -6913,7 +6913,7 @@ resolve@^1.17.0:
     standard-version: ^8.0.0
     ts-jest: ^26.1.0
     tslib: ^1.13.0
-    typescript: 3.8.3
+    typescript: ^4.0.0
     uuid: ^8.1.0
   dependenciesMeta:
     core-js:
@@ -6921,23 +6921,23 @@ resolve@^1.17.0:
   languageName: unknown
   linkType: soft
 
-typescript@3.8.3:
-  version: 3.8.3
-  resolution: "typescript@npm:3.8.3"
+"typescript@npm:^4.0.0":
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3ef07f997a9a3af80d663cc611be984d3e22df3dc2b5ecfa6cbe7dbd54f1984fa1c679ba67e6a9d36d73ffdbbab88a0fbb58eb30ffc4f748f3a3c28d562b546a
+  checksum: ee000bc26848147ad423b581bd250075662a354d84f0e06eb76d3b892328d8d4440b7487b5a83e851b12b255f55d71835b008a66cbf8f255a11e4400159237db
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@3.8.3#~builtin<compat/typescript>":
-  version: 3.8.3
-  resolution: "typescript@patch:typescript@npm%3A3.8.3#~builtin<compat/typescript>::version=3.8.3&hash=c44097"
+"typescript@patch:typescript@^4.0.0#~builtin<compat/typescript>":
+  version: 4.9.5
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: fba33b9756bbffcbdc87254af0f491852bac475c1302b570b9c656c10fad9dbe7113975a64beb6035979db555b0fc87fa168734f10bf556f173213c13d371e4e
+  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
   languageName: node
   linkType: hard
 
