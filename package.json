@@ -1,6 +1,6 @@
 {
 	"name": "typescript-to-proptypes",
-	"packageManager": "yarn@3.0.0",
+	"packageManager": "yarn@3.5.0",
 	"version": "2.2.1",
 	"description": "Generate proptypes from typescript declarations",
 	"main": "dist/index.js",
