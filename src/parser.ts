@@ -246,16 +246,23 @@ export function parseFromProgram(
 		}
 		const componentName = node.name.getText();
 
+		if (symbol.valueDeclaration === undefined) {
+			return;
+		}
+
 		const type = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration);
 		type.getCallSignatures().forEach((signature) => {
 			if (!isTypeJSXElementLike(signature.getReturnType())) {
 				return;
 			}
 
-			const propsType = checker.getTypeOfSymbolAtLocation(
-				signature.parameters[0],
-				signature.parameters[0].valueDeclaration
-			);
+			const declaration = signature.parameters[0]?.valueDeclaration;
+
+			if (declaration === undefined) {
+				return;
+			}
+
+			const propsType = checker.getTypeOfSymbolAtLocation(signature.parameters[0], declaration);
 
 			parsePropsType(componentName, propsType, node.getSourceFile());
 		});

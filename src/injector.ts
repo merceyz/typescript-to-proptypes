@@ -329,11 +329,11 @@ function plugin(
 		} else if (babelTypes.isExportNamedDeclaration(path.parent)) {
 			path.insertAfter(babel.template.ast(`export { ${nodeName} };`));
 			path.insertAfter(babel.template.ast(placeholder));
-			path.parentPath.replaceWith(path.node);
+			path.parentPath?.replaceWith(path.node);
 		} else if (babelTypes.isExportDefaultDeclaration(path.parent)) {
 			path.insertAfter(babel.template.ast(`export default ${nodeName};`));
 			path.insertAfter(babel.template.ast(placeholder));
-			path.parentPath.replaceWith(path.node);
+			path.parentPath?.replaceWith(path.node);
 		} else {
 			path.insertAfter(babel.template.ast(placeholder));
 		}
